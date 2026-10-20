@@ -58,7 +58,46 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
 
-const loginUser = asyncHandler(async (req, res) => {});
+const loginUser = asyncHandler(async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!(username || email)) {
+    throw new ApiError(400, "Username or email is required");
+  }
+
+  const user = await User.findOne({
+    $or: [{ username }, { email }],
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User does not exists");
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Incorrect Password");
+  }
+
+  // acces and refresh token
+  const { accessToken, refreshToken } = generateAccessAndRefreshTokens(
+    user._id,
+  );
+
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken",
+  );
+
+  return res
+    .status(200)
+    .json(
+      ApiResponse(
+        200,
+        { user: loggedInUser, accessToken, refreshToken },
+        "User logged in successfully",
+      ),
+    );
+});
 
 const logoutUser = asyncHandler(async (req, res) => {});
 
