@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
+import { User } from "./user.model.js";
 
 const blogSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       required: true,
+      trim: true,
     },
     description: {
       type: String,
@@ -20,7 +22,8 @@ const blogSchema = new mongoose.Schema(
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: User,
+      ref: "User",
+      required: true,
     },
   },
   { timestamps: true },
