@@ -28,10 +28,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-userSchema.methods.generateAccessToken = () => {
-  jwt.sign(
+userSchema.methods.generateAccessToken = function () {
+  return jwt.sign(
     {
-      id: this.id,
+      id: this._id,
       email: this.email,
       username: this.username,
     },
@@ -42,8 +42,8 @@ userSchema.methods.generateAccessToken = () => {
   );
 };
 
-userSchema.methods.generateRefreshToken = () => {
-  jwt.sign(
+userSchema.methods.generateRefreshToken = function () {
+  return jwt.sign(
     {
       id: this._id,
     },
