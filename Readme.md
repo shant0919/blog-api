@@ -15,7 +15,7 @@ A RESTful API for a blogging platform where users can create, manage, and intera
 - [x] Basic structure of the project
 - [x] Data models for users and posts
 - [ ] Routes for registration, login, and posting
-- [ ] Authentication middleware
+- [x] Authentication middleware
 - [ ] Comment model and relationships
 - [ ] Routes for adding and viewing comments
 

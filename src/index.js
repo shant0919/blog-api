@@ -9,6 +9,7 @@ dotenv.config();
 import express from "express";
 import connectDB from "./db/index.js";
 import userRouter from "./routes/user.route.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 app.use(express.json());
@@ -24,4 +25,5 @@ connectDB()
     console.log("MongoDB connection failed!");
   });
 
-app.use("api/v1/users", userRouter);
+app.use("/api/v1/users", userRouter);
+app.use(errorHandler);
