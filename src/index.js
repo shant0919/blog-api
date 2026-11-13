@@ -8,8 +8,10 @@ dotenv.config();
 
 import express from "express";
 import connectDB from "./db/index.js";
+import userRouter from "./routes/user.route.js";
 
 const app = express();
+app.use(express.json());
 
 connectDB()
   .then(() => {
@@ -21,3 +23,5 @@ connectDB()
     console.log(error);
     console.log("MongoDB connection failed!");
   });
+
+app.use("api/v1/users", userRouter);
