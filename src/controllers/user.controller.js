@@ -3,6 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -86,7 +87,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Incorrect Password");
   }
 
-  // acces and refresh token
+  // access and refresh token
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id,
   );
@@ -106,10 +107,27 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-const logoutUser = asyncHandler(async (req, res) => {});
+const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: { refreshToken: undefined },
+    },
+    {
+      new: true,
+    },
+  );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "User logged out successfully."));
+});
 
 const AccessRefreshToken = asyncHandler(async (req, res) => {});
 
-const getCurrentUser = asyncHandler(async (req, res) => {});
+const getCurrentUser = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .json(new ApiResponse(200, req.user, "User fetched successfully"));
+});
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, getCurrentUser, logoutUser };
