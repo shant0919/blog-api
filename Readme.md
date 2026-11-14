@@ -12,12 +12,40 @@ A RESTful API for a blogging platform where users can create, manage, and intera
 
 ## To-Do
 
-- [x] Basic structure of the project
-- [x] Data models for users and posts
-- [ ] Routes for registration, login, and posting
-- [x] Authentication middleware
-- [ ] Comment model and relationships
-- [ ] Routes for adding and viewing comments
+## To-Do
+
+### Setup & Auth
+
+- [x] Project structure, Express server, MongoDB connection
+- [x] User and Blog models
+- [x] Register and login routes
+- [x] Auth middleware (`verifyJWT`)
+- [x] Logout and current-user routes
+- [ ] Refresh-token route (new access token from refresh token)
+
+### Blogs
+
+- [ ] `createBlog` (protected, owner from `req.user`)
+- [ ] `getAllBlogs` (public)
+- [ ] `getBlogById` (public, handle invalid/missing id)
+- [ ] `updateBlog` (protected + owner only)
+- [ ] `deleteBlog` (protected + owner only)
+- [ ] Blog routes mounted at `/api/v1/blogs`
+
+### Comments
+
+- [ ] Comment model (content, blog, owner)
+- [ ] `addComment` (protected)
+- [ ] `getCommentsForBlog` (public)
+- [ ] `deleteComment` (protected + owner only)
+
+### Polish
+
+- [ ] Input validation on blog and comment fields
+- [ ] Pagination on `getAllBlogs`
+- [ ] API endpoints table in the README
+- [ ] `.env.example` with key names (no values)
+- [ ] Deploy (Render or Railway) and add the live link
 
 ## Project Status
 
